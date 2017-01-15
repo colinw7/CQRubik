@@ -6,6 +6,8 @@ TARGET = CQRubik
 
 DEPENDPATH += .
 
+MOC_DIR = .moc
+
 QMAKE_CXXFLAGS += -std=c++11
 
 #CONFIG += debug
