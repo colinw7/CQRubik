@@ -19,7 +19,6 @@ CQRubik.cpp \
 CGLTexture.cpp \
 CGLUtil.cpp \
 CQGLControl.cpp \
-CQWinWidget.cpp \
 
 HEADERS += \
 CQRubik.h \
@@ -27,7 +26,6 @@ CQRubik.h \
 CGLTexture.h \
 CGLUtil.h \
 CQGLControl.h \
-CQWinWidget.h \
 
 DESTDIR     = ../bin
 OBJECTS_DIR = ../obj
@@ -55,10 +53,11 @@ unix:LIBS += \
 -L../../CUndo/lib \
 -L../../CFile/lib \
 -L../../CFileUtil/lib \
+-L../../CMath/lib \
 -L../../CStrUtil/lib \
 -L../../CRegExp/lib \
 -L../../COS/lib \
 -L../../CUtil/lib \
 -lCQUtil -lCImageLib -lCFont -lCConfig \
--lCUndo -lCFile -lCFileUtil -lCStrUtil -lCRegExp -lCOS -lCUtil \
+-lCUndo -lCFile -lCFileUtil -lCMath -lCStrUtil -lCRegExp -lCOS -lCUtil \
 -lglut -lGLU -lGL -lpng -ljpeg -ltre
