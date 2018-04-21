@@ -4129,14 +4129,14 @@ CQRubik3D(CQRubik *rubik) :
 
   texture_ = new CGLTexture;
 
-//CImageFileSrc src("textures/EscherCubeFish_2048.gif");
+  CImageFileSrc src("textures/EscherCubeFish_2048.gif");
 //CImageFileSrc src("textures/Cubetexture.jpg");
 
-//CImagePtr image = CImageMgrInst->createImage(src);
+  CImagePtr image = CImageMgrInst->createImage(src);
 
-//image->convertToRGB();
+  image->convertToRGB();
 
-//texture_->setImage(image);
+  texture_->setImage(image);
 
   //tId_ = bindTexture(image.cast<CQImage>()->getQImage());
 
@@ -4366,7 +4366,7 @@ drawSideCubes(uint i, bool *b, CQRubikAnimateData *animateData)
     uint ix = j % CQRubik::SIDE_LENGTH;
     uint iy = j / CQRubik::SIDE_LENGTH;
 
-    double xc = 0, yc = 0, zc = 0, s = 0;
+    double xc, yc, zc, s;
 
     if      (fabs(dx) < 1E-6) {
       s  = fabs(dsz);
@@ -4573,8 +4573,8 @@ drawSide(uint i)
     uint ix = j % CQRubik::SIDE_LENGTH;
     uint iy = j / CQRubik::SIDE_LENGTH;
 
-    double xo1 = 0, yo1 = 0, zo1 = 0, xo2 = 0, yo2 = 0, zo2 = 0;
-    double txo1 = 0, tyo1 = 0, txo2 = 0, tyo2 = 0;
+    double xo1, yo1, zo1, xo2, yo2, zo2;
+    double txo1, tyo1, txo2, tyo2;
 
     if      (fabs(dsx) < 1E-6) {
       xo1 = x1; yo1 = y1 + ix*dsy + gap*dsy; zo1 = z1 + iy*dsz + gap*dsz;
@@ -4751,8 +4751,8 @@ animateSide(CQRubikAnimateData *animateData)
 
     const CRubikPiece &piece = side.pieces[ix][iy];
 
-    double xo1 = 0, yo1 = 0, zo1 = 0, xo2 = 0, yo2 = 0, zo2 = 0;
-    double txo1 = 0, tyo1 = 0, txo2 = 0, tyo2 = 0;
+    double xo1, yo1, zo1, xo2, yo2, zo2;
+    double txo1, tyo1, txo2, tyo2;
 
     if      (fabs(dsx) < 1E-6) {
       xo1 = x1; yo1 = y1 + ix*dsy + gap*dsy; zo1 = z1 + iy*dsz + gap*dsz;
@@ -4772,8 +4772,7 @@ animateSide(CQRubikAnimateData *animateData)
 
     if (flip[animateData->side_num]) { std::swap(ix, iy); }
 
-    double rx11 = 0, ry11 = 0, rz11 = 0, rx12 = 0, ry12 = 0, rz12 = 0;
-    double rx21 = 0, ry21 = 0, rz21 = 0, rx22 = 0, ry22 = 0, rz22 = 0;
+    double rx11, ry11, rz11, rx12, ry12, rz12, rx21, ry21, rz21, rx22, ry22, rz22;
 
     if      (fabs(dsx) < 1E-6) {
       m.multiplyPoint(xo1, yo1, zo1, &rx11, &ry11, &rz11);
