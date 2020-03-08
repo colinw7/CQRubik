@@ -4366,24 +4366,24 @@ drawSideCubes(uint i, bool *b, CQRubikAnimateData *animateData)
     uint ix = j % CQRubik::SIDE_LENGTH;
     uint iy = j / CQRubik::SIDE_LENGTH;
 
-    double xc, yc, zc, s;
+    double xc = 0.0, yc = 0.0, zc = 0.0, s = 0.0;
 
     if      (fabs(dx) < 1E-6) {
-      s  = fabs(dsz);
+      s = fabs(dsz);
 
       xc = x1 +          (i == 0 ? s/2 : -s/2);
       yc = y1 + ix*dsy + dsy/2;
       zc = z1 + iy*dsz + dsz/2;
     }
     else if (fabs(dy) < 1E-6) {
-      s  = fabs(dsx);
+      s = fabs(dsx);
 
       xc = x1 + ix*dsx + dsx/2;
       yc = y1 +          (i == 1 ? -s/2 : s/2);
       zc = z1 + iy*dsz + dsz/2;
     }
     else if (fabs(dz) < 1E-6) {
-      s  = fabs(dsx);
+      s = fabs(dsx);
 
       xc = x1 + ix*dsx + dsx/2;
       yc = y1 + iy*dsy + dsy/2;
