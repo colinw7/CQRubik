@@ -7,6 +7,7 @@
 #include <QIcon>
 #include <QPixmap>
 #include <QGLWidget>
+#include <QOpenGLWidget>
 #include <QMouseEvent>
 
 #include <xpm/depth.xpm>
@@ -19,7 +20,7 @@
 class CQToolButton : public QToolButton {
  public:
   CQToolButton(const char **xpm_data, const char *tip) :
-   QToolButton(NULL) {
+   QToolButton(nullptr) {
     setIcon(QIcon(QPixmap(xpm_data)));
 
     setAutoRaise(true);
@@ -30,33 +31,22 @@ class CQToolButton : public QToolButton {
 };
 
 CQGLControl::
-CQGLControl(QGLWidget *w) :
- QObject      (NULL),
- w_           (w),
- depth_test_  (false),
- cull_face_   (false),
- lighting_    (false),
- outline_     (false),
- front_face_  (false),
- smooth_shade_(false),
- left_        (0.0),
- right_       (0.0),
- bottom_      (1.0),
- top_         (1.0),
- size_        (2.0),
- center_x_    (0.0),
- center_y_    (0.0),
- znear_       (-10.0),
- zfar_        ( 10.0),
- mouse_x_     (0),
- mouse_y_     (0),
- mouse_left_  (false),
- mouse_middle_(false),
- mouse_right_ (false),
- drag_pos_x_  (0.0),
- drag_pos_y_  (0.0),
- drag_pos_z_  (0.0),
- ref_point_   (0.0, 0.0, 0.0)
+CQGLControl(QGLWidget *glW) :
+ QObject(nullptr), glW_(glW)
+{
+  init();
+}
+
+CQGLControl::
+CQGLControl(QOpenGLWidget *openglW) :
+ QObject(nullptr), openglW_(openglW)
+{
+  init();
+}
+
+void
+CQGLControl::
+init()
 {
   memset(matrix_ , 0, 16*sizeof(double));
   memset(imatrix_, 0, 16*sizeof(double));
@@ -161,7 +151,7 @@ handleResize(int w, int h)
 {
   glViewport(0, 0, w, h);
 
-  double aspect = double(w)/double(h);
+  double aspect = double(w)/double(h ? h : 1);
 
   double size2 = size_/2.0;
 
@@ -175,6 +165,8 @@ handleResize(int w, int h)
   glLoadIdentity();
 
   glOrtho(left_, right_, bottom_, top_, znear_, zfar_);
+
+  glGetDoublev(GL_PROJECTION_MATRIX, pmatrix_);
 
   glMatrixMode(GL_MODELVIEW);
 }
@@ -221,11 +213,11 @@ handleMouseMotion(QMouseEvent *e)
   if      (mouse_middle_ || (mouse_left_ && mouse_right_)) {
     double s = exp(double(dy)*0.01);
 
-    glTranslatef( ref_point_.x,  ref_point_.y,  ref_point_.z);
+    glTranslatef( refPoint_.x,  refPoint_.y,  refPoint_.z);
 
     glScalef(s, s, s);
 
-    glTranslatef(-ref_point_.x, -ref_point_.y, -ref_point_.z);
+    glTranslatef(-refPoint_.x, -refPoint_.y, -refPoint_.z);
   }
   // rotate
   else if (mouse_left_) {
@@ -245,11 +237,11 @@ handleMouseMotion(QMouseEvent *e)
     double by = imatrix_[1]*ax + imatrix_[5]*ay + imatrix_[9] *az;
     double bz = imatrix_[2]*ax + imatrix_[6]*ay + imatrix_[10]*az;
 
-    glTranslatef( ref_point_.x,  ref_point_.y,  ref_point_.z);
+    glTranslatef( refPoint_.x,  refPoint_.y,  refPoint_.z);
 
     glRotatef(angle, bx, by, bz);
 
-    glTranslatef(-ref_point_.x, -ref_point_.y, -ref_point_.z);
+    glTranslatef(-refPoint_.x, -refPoint_.y, -refPoint_.z);
   }
   // move
   else if (mouse_right_) {
@@ -281,7 +273,7 @@ CQGLControl::
 getMousePos(int x, int y, double *px, double *py, double *pz)
 {
   /* Use the ortho projection and viewport information to map from mouse
-    co-ordinates back into world co-ordinates */
+     co-ordinates back into world co-ordinates */
 
   GLint viewport[4];
 
@@ -297,9 +289,27 @@ getMousePos(int x, int y, double *px, double *py, double *pz)
 
 void
 CQGLControl::
+getCameraPos(double *px, double *py, double *pz)
+{
+  *px = center_x_;
+  *py = center_y_;
+  *pz = znear_;
+}
+
+void
+CQGLControl::
 getMatrix()
 {
   glGetDoublev(GL_MODELVIEW_MATRIX, matrix_);
+
+  CGLUtil::invertMatrix(matrix_, imatrix_);
+}
+
+void
+CQGLControl::
+setMatrix(const Matrix &matrix)
+{
+  memcpy(&matrix_[0], &matrix[0], 16*sizeof(double));
 
   CGLUtil::invertMatrix(matrix_, imatrix_);
 }
@@ -308,8 +318,7 @@ getMatrix()
 
 CQGLControlToolBar::
 CQGLControlToolBar(CQGLControl *control) :
- QWidget (NULL),
- control_(control)
+ QWidget(nullptr), control_(control)
 {
   QHBoxLayout *layout = new QHBoxLayout(this);
   layout->setMargin(0), layout->setSpacing(0);
