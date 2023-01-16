@@ -18,7 +18,7 @@ class CQRubikUndoMoveData : public CUndoData {
    rubik_(rubik), side_num_(side_num), dir_(dir), pos_(pos) {
   }
 
-  bool exec() {
+  bool exec() override {
     if (getState() == UNDO_STATE) {
       if      (dir_ == 'U') rubik_->moveSideDown (side_num_, pos_);
       else if (dir_ == 'D') rubik_->moveSideUp   (side_num_, pos_);
@@ -50,7 +50,7 @@ class CQRubikUndoRotateData : public CUndoData {
    rubik_(rubik), side_num_(side_num), clockwise_(clockwise) {
   }
 
-  bool exec() {
+  bool exec() override {
     if (getState() == UNDO_STATE) rubik_->rotateSide(side_num_, ! clockwise_);
     else                          rubik_->rotateSide(side_num_, clockwise_);
 

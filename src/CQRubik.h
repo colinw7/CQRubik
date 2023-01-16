@@ -181,10 +181,10 @@ class CQRubik : public QWidget {
 
   CQRubikAnimateData &getAnimateData() { return animateData_; }
 
-  void paintEvent(QPaintEvent *);
-  void resizeEvent(QResizeEvent *);
+  void paintEvent(QPaintEvent *) override;
+  void resizeEvent(QResizeEvent *) override;
 
-  void keyPressEvent(QKeyEvent *e);
+  void keyPressEvent(QKeyEvent *e) override;
 
   void waitAnimate();
 
@@ -270,10 +270,10 @@ class CQRubik2D : public QWidget {
   CQRubik2D(CQRubik *rubik);
 
  private:
-  void paintEvent(QPaintEvent *);
+  void paintEvent(QPaintEvent *) override;
 
-  void mousePressEvent(QMouseEvent *e);
-  void keyPressEvent  (QKeyEvent *e);
+  void mousePressEvent(QMouseEvent *e) override;
+  void keyPressEvent  (QKeyEvent *e) override;
 
  private:
   void drawSide(QPainter *p, uint i);
@@ -297,15 +297,15 @@ class CQRubik3D : public QGLWidget {
   void animateSide(CQRubikAnimateData *animateData);
 
  protected:
-  void paintGL();
+  void paintGL() override;
 
-  void resizeGL(int width, int height);
+  void resizeGL(int width, int height) override;
 
-  void mousePressEvent  (QMouseEvent *event);
-  void mouseReleaseEvent(QMouseEvent *event);
-  void mouseMoveEvent   (QMouseEvent *event);
+  void mousePressEvent  (QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
+  void mouseMoveEvent   (QMouseEvent *event) override;
 
-  void keyPressEvent(QKeyEvent *event);
+  void keyPressEvent(QKeyEvent *event) override;
 
   void drawSide(uint i);
 
