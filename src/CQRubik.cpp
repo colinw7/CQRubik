@@ -4138,7 +4138,7 @@ CQRubik3D(CQRubik *rubik) :
 
   texture_->setImage(image);
 
-  //tId_ = bindTexture(image.cast<CQImage>()->getQImage());
+  //tId_ = bindTexture(dynamic_cast<CQImage *>(image.get())->getQImage());
 
   //toolbar_ = threed_->createToolBar();
 }
