@@ -38,11 +38,13 @@ class CQRubikUndoMoveData : public CUndoData {
   }
 
  private:
-  CQRubik *rubik_;
-  uint     side_num_;
-  char     dir_;
-  uint     pos_;
+  CQRubik *rubik_    { nullptr };
+  uint     side_num_ { 0 };
+  char     dir_      { '\0' };
+  uint     pos_      { 0 };
 };
+
+//----
 
 class CQRubikUndoRotateData : public CUndoData {
  public:
@@ -68,10 +70,12 @@ class CQRubikUndoRotateData : public CUndoData {
   }
 
  private:
-  CQRubik *rubik_;
-  uint     side_num_;
-  bool     clockwise_;
+  CQRubik *rubik_     { nullptr };
+  uint     side_num_  { 0 };
+  bool     clockwise_ { false };
 };
+
+//---
 
 int
 main(int argc, char **argv)
@@ -91,8 +95,7 @@ main(int argc, char **argv)
 
 CQRubik::
 CQRubik(QWidget *parent) :
- QWidget(parent), shade_(true), number_(false), undo_group_(true),
- animate_(false), validate_(false), show3_(false), dir_(0)
+ QWidget(parent)
 {
   twod_   = new CQRubik2D(this);
   threed_ = new CQRubik3D(this);

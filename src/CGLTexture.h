@@ -2,21 +2,54 @@
 #define CGL_TEXTURE_H
 
 #include <CImageLib.h>
+#include <GL/gl.h>
 
 class CGLTexture {
  public:
+  enum class WrapType {
+    CLAMP,
+    REPEAT
+  };
+
+ public:
   CGLTexture();
+  CGLTexture(const CImagePtr &image);
+
  ~CGLTexture();
 
-  bool load(const std::string &fileName, bool flip=false);
+  const WrapType &wrapType() const { return wrapType_; }
+  void setWrapType(const WrapType &v) { wrapType_ = v; }
 
+  bool useAlpha() const { return useAlpha_; }
+  void setUseAlpha(bool b) { useAlpha_ = b; }
+
+  bool isFlipped() const { return flipped_; }
+  void setFlipped(bool b) { flipped_ = b; }
+
+  bool load(const std::string &fileName, bool flip=false);
   bool load(CImagePtr image, bool flip=false);
 
-  void setImage(CImagePtr image);
-
-  void bind() const;
+  const CImagePtr &getImage() const { return image_; }
+  void setImage(const CImagePtr &image);
 
   uint getId() const { return id_; }
+
+  const std::string &getName() const { return name_; }
+  void setName(const std::string &s) { name_ = s; }
+
+#if 0
+  bool setTarget(int w, int h);
+#endif
+
+  void enable(bool b);
+//void bindTo(GLenum num) const;
+  void bind() const;
+  void unbind() const;
+
+#if 0
+  void bindBuffer() const;
+  void unbindBuffer() const;
+#endif
 
   void draw();
   void draw(double x1, double y1, double x2, double y2);
@@ -32,9 +65,24 @@ class CGLTexture {
 
  private:
   CImagePtr image_;
-  uint      id_;
-  bool      valid_;
+
+  uint        id_       { 0 };
+  std::string name_;
+  bool        valid_    { false };
+  WrapType    wrapType_ { WrapType::REPEAT };
+  bool        useAlpha_ { true };
+  bool        flipped_  { false };
+
+#if 0
+  GLuint frameBufferId_ { 0 };
+  GLuint depthRenderBuffer_ { 0 };
+
+  int targetWidth_  { -1 };
+  int targetHeight_ { -1 };
+#endif
 };
+
+//---
 
 class CGLTextureMgr {
  public:
@@ -49,13 +97,13 @@ class CGLTextureMgr {
 
   CGLTexture *load(const std::string &fileName, bool flip=false) {
     // Look for the texture in the registry
-    TextureMap::const_iterator p = texture_map_.find(fileName);
+    auto p = texture_map_.find(fileName);
 
     if (p != texture_map_.end())
       return (*p).second;
 
     // If not found, load the texture
-    CGLTexture *texture = new CGLTexture;
+    auto *texture = new CGLTexture;
 
     if (! texture->load(fileName, flip)) {
       delete texture;
@@ -69,7 +117,7 @@ class CGLTextureMgr {
   }
 
  private:
-  typedef std::map<std::string,CGLTexture *> TextureMap;
+  using TextureMap = std::map<std::string,CGLTexture *>;
 
   TextureMap texture_map_;
 };

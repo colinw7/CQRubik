@@ -121,25 +121,25 @@ void *
 CGLUtil::
 fontToBitmap(CFontPtr font)
 {
-  if (! font.isValid())
+  if (! font)
     return GLUT_BITMAP_HELVETICA_12;
 
   const string &family = font->getFamily();
 
-  int size = font->getISize();
+  int size = int(font->getISize());
 
   if      (family == "helvetica") {
-    if (size <= 10) return GLUT_BITMAP_HELVETICA_10;
-    if (size <= 14) return GLUT_BITMAP_HELVETICA_12;
-                    return GLUT_BITMAP_HELVETICA_18;
+    if (size <= 10) { return GLUT_BITMAP_HELVETICA_10; }
+    if (size <= 14) { return GLUT_BITMAP_HELVETICA_12; }
+                      return GLUT_BITMAP_HELVETICA_18;
   }
   else if (family == "times") {
-    if (size <= 16) return GLUT_BITMAP_TIMES_ROMAN_10;
-                    return GLUT_BITMAP_TIMES_ROMAN_24;
+    if (size <= 16) { return GLUT_BITMAP_TIMES_ROMAN_10; }
+                      return GLUT_BITMAP_TIMES_ROMAN_24;
   }
   else {
-    if (size <= 13) return GLUT_BITMAP_8_BY_13;
-                    return GLUT_BITMAP_9_BY_15;
+    if (size <= 13) { return GLUT_BITMAP_8_BY_13; }
+                      return GLUT_BITMAP_9_BY_15;
   }
 }
 
@@ -147,25 +147,25 @@ int
 CGLUtil::
 fontWidth(CFontPtr font)
 {
-  if (! font.isValid())
+  if (! font)
     return 8;
 
   const string &family = font->getFamily();
 
-  int size = font->getISize();
+  int size = int(font->getISize());
 
   if      (family == "helvetica") {
-    if (size <= 10) return 8;
-    if (size <= 14) return 10;
-                    return 14;
+    if (size <= 10) { return 8; }
+    if (size <= 14) { return 10; }
+                      return 14;
   }
   else if (family == "times") {
-    if (size <= 16) return 8;
-                    return 16;
+    if (size <= 16) { return 8; }
+                      return 16;
   }
   else {
-    if (size <= 13) return 8;
-                    return 9;
+    if (size <= 13) { return 8; }
+                      return 9;
   }
 }
 
@@ -173,25 +173,25 @@ int
 CGLUtil::
 fontAscent(CFontPtr font)
 {
-  if (! font.isValid())
+  if (! font)
     return 10;
 
   const string &family = font->getFamily();
 
-  int size = font->getISize();
+  int size = int(font->getISize());
 
   if      (family == "helvetica") {
-    if (size <= 10) return 8;
-    if (size <= 14) return 10;
-                    return 15;
+    if (size <= 10) { return 8; }
+    if (size <= 14) { return 10; }
+                      return 15;
   }
   else if (family == "times") {
-    if (size <= 16) return 8;
-                    return 20;
+    if (size <= 16) { return 8; }
+                      return 20;
   }
   else {
-    if (size <= 13) return 11;
-                    return 13;
+    if (size <= 13) { return 11; }
+                      return 13;
   }
 }
 
@@ -199,25 +199,25 @@ int
 CGLUtil::
 fontDescent(CFontPtr font)
 {
-  if (! font.isValid())
+  if (! font)
     return 2;
 
   const string &family = font->getFamily();
 
-  int size = font->getISize();
+  int size = int(font->getISize());
 
   if      (family == "helvetica") {
-    if (size <= 10) return 2;
-    if (size <= 14) return 2;
-                    return 3;
+    if (size <= 10) { return 2; }
+    if (size <= 14) { return 2; }
+                      return 3;
   }
   else if (family == "times") {
-    if (size <= 16) return 2;
-                    return 4;
+    if (size <= 16) { return 2; }
+                      return 4;
   }
   else {
-    if (size <= 13) return 2;
-                    return 2;
+    if (size <= 13) { return 2; }
+                      return 2;
   }
 }
 

@@ -248,15 +248,20 @@ class CQRubik : public QWidget {
   CRubikSide          sides_[CUBE_SIDES];
   CRubikPieceInd      ind_;
   QColor              colors_[CUBE_SIDES];
-  bool                shade_, number_, undo_group_, animate_, validate_, show3_;
+  bool                shade_      { true };
+  bool                number_     { false };
+  bool                undo_group_ { true };
+  bool                animate_    { false };
+  bool                validate_   { false };
+  bool                show3_      { false };
   CQRubikAnimateData  animateData_;
-  int                 dir_;
-  CQRubik2D          *twod_;
-  CQRubik3D          *threed_;
-  CQWinWidget        *w2_;
-  CQWinWidget        *w3_;
-  CQGLControlToolBar *toolbar_;
-  CUndo              *undo_;
+  int                 dir_        { 0 };
+  CQRubik2D*          twod_       { nullptr };
+  CQRubik3D*          threed_     { nullptr };
+  CQWinWidget*        w2_         { nullptr };
+  CQWinWidget*        w3_         { nullptr };
+  CQGLControlToolBar* toolbar_    { nullptr };
+  CUndo*              undo_       { nullptr };
 };
 
 class CQRubik2D : public QWidget {
